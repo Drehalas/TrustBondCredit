@@ -89,143 +89,145 @@ export default function App() {
   }, [refreshSeconds]);
 
   return (
-    <div className="app-shell">
+    <div className="min-h-screen flex flex-col">
       <BondCreditHeader connected={connected} />
       <div className="noise" aria-hidden="true" />
-      <motion.header
-        className="hero"
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="kicker text-uppercase">
-          Hedera Agent Kit · Hashgraph
-          {" "}
-          <span 
-            className="cursor-pointer focus-ring"
-            style={{ 
-              display: "inline-block", 
-              marginLeft: "12px",
-              width: "8px", 
-              height: "8px", 
-              borderRadius: "50%", 
-              backgroundColor: connected ? "var(--bondcredit-green)" : "var(--bondcredit-red)"
-            }} 
-            title={connected ? "Connected to backend" : "Using data"}
-            aria-label={connected ? "Connected to backend" : "Using data"}
-          />
-        </p>
-        <h1>Volatility Command Deck</h1>
-        <p className="hero-sub">
-        Bonzo vault rebalancing · live feed        </p>
-      </motion.header>
-
-      <main className="grid">
-        <motion.div
-          className="registry-chatbot-wrap"
-          initial={{ opacity: 0, y: 20 }}
+      
+      <div className="app-shell flex-grow">
+        <motion.header
+          className="hero"
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.6 }}
         >
-          <RegistryChatbot />
-        </motion.div>
+          <p className="kicker text-uppercase">
+            Hedera Agent Kit · Hashgraph
+            {" "}
+            <span 
+              className="cursor-pointer focus-ring"
+              style={{ 
+                display: "inline-block", 
+                marginLeft: "12px",
+                width: "8px", 
+                height: "8px", 
+                borderRadius: "50%", 
+                backgroundColor: connected ? "var(--bondcredit-green)" : "var(--bondcredit-red)"
+              }} 
+              title={connected ? "Connected to backend" : "Using data"}
+              aria-label={connected ? "Connected to backend" : "Using data"}
+            />
+          </p>
+          <h1>Volatility Command Deck</h1>
+          <p className="hero-sub">
+          Bonzo vault rebalancing · live feed        </p>
+        </motion.header>
 
-        <motion.section
-          className="card primary dashboard-panel"
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-        >
-          <div className="card-title-wrap">
-            <h2>Current Regime</h2>
-            <span className={`status-pill ${actionClassMap[latest.action]}`} aria-label={`Current action: ${actionLabel(latest.action)}`}>
-              {actionLabel(latest.action)}
-            </span>
-          </div>
-          <div className="gauge-wrap">
-            <div className="gauge-ring" style={ringStyle(latest.volatility)}>
-              <div className="gauge-core">
-                <div className="big-number text-mono">{latest.volatility}%</div>
-                <div className="muted">1h realized vol</div>
+        <main className="grid">
+          <motion.div
+            className="registry-chatbot-wrap"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+          >
+            <RegistryChatbot />
+          </motion.div>
+
+          <motion.section
+            className="card primary dashboard-panel"
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+          >
+            <div className="card-title-wrap">
+              <h2>Current Regime</h2>
+              <span className={`status-pill ${actionClassMap[latest.action]}`} aria-label={`Current action: ${actionLabel(latest.action)}`}>
+                {actionLabel(latest.action)}
+              </span>
+            </div>
+            <div className="gauge-wrap">
+              <div className="gauge-ring" style={ringStyle(latest.volatility)}>
+                <div className="gauge-core">
+                  <div className="big-number text-mono">{latest.volatility}%</div>
+                  <div className="muted">1h realized vol</div>
+                </div>
+              </div>
+              <div className="threshold-blurb">
+                <p>{thresholdText(latest.volatility)}</p>
+                <p className="muted mono">Last tick: {new Date(latest.timestamp).toLocaleTimeString()}</p>
               </div>
             </div>
-            <div className="threshold-blurb">
-              <p>{thresholdText(latest.volatility)}</p>
-              <p className="muted mono">Last tick: {new Date(latest.timestamp).toLocaleTimeString()}</p>
+          </motion.section>
+
+          <motion.section
+            className="card dashboard-panel"
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <h2>Volatility Stream</h2>
+            <svg className="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" role="img">
+              <polyline points={sparkline} />
+            </svg>
+            <div className="threshold-lines">
+              <div><span className="text-green">15%</span></div>
+              <div><span className="text-lime">30%</span></div>
+              <div><span className="text-amber">50%</span></div>
             </div>
-          </div>
-        </motion.section>
+          </motion.section>
 
-        <motion.section
-          className="card dashboard-panel"
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <h2>Volatility Stream</h2>
-          <svg className="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" role="img">
-            <polyline points={sparkline} />
-          </svg>
-          <div className="threshold-lines">
-            <div><span className="text-green">15%</span></div>
-            <div><span className="text-lime">30%</span></div>
-            <div><span className="text-amber">50%</span></div>
-          </div>
-        </motion.section>
+          <motion.section
+            className="card dashboard-panel"
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5 }}
+          >
+            <h2>Action Timeline</h2>
+            <ul className="timeline">
+              {[...history].reverse().slice(0, 8).map((item, index) => (
+                <li key={`${item.timestamp}-${index}`}>
+                  <span className={`dot ${actionClassMap[item.action]}`} />
+                  <div>
+                    <p className="text-mono">{new Date(item.timestamp).toLocaleTimeString()}</p>
+                    <p><span className="text-mono">{item.volatility}%</span> {"->"} {actionLabel(item.action)}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.section>
 
-        <motion.section
-          className="card dashboard-panel"
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.5 }}
-        >
-          <h2>Action Timeline</h2>
-          <ul className="timeline">
-            {[...history].reverse().slice(0, 8).map((item, index) => (
-              <li key={`${item.timestamp}-${index}`}>
-                <span className={`dot ${actionClassMap[item.action]}`} />
-                <div>
-                  <p className="text-mono">{new Date(item.timestamp).toLocaleTimeString()}</p>
-                  <p><span className="text-mono">{item.volatility}%</span> {"->"} {actionLabel(item.action)}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </motion.section>
-
-        <motion.section
-          className="card controls dashboard-panel"
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <h2>Polling Controls</h2>
-          <label className="field">
-            Refresh interval (seconds)
-            <input
-              type="number"
-              min={1}
-              max={60}
-              value={refreshSeconds}
-              onChange={(event) => setRefreshSeconds(Number(event.target.value))}
-            />
-          </label>
-          <p className="muted">
-            {connected ? (
-              <>
-                ✓ Live connection to backend keeper at <code>http://localhost:3000/api/volatility</code>
-              </>
-            ) : (
-              <>
-                ⚠ Connection failed. Using fallback data. Start backend: <code>npm start</code>
-              </>
-            )}
-          </p>
-        </motion.section>
-      </main>
+          <motion.section
+            className="card controls dashboard-panel"
+            initial={{ opacity: 0, y: 26 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <h2>Polling Controls</h2>
+            <label className="field">
+              Refresh interval (seconds)
+              <input
+                type="number"
+                min={1}
+                max={60}
+                value={refreshSeconds}
+                onChange={(event) => setRefreshSeconds(Number(event.target.value))}
+              />
+            </label>
+            <p className="muted">
+              {connected ? (
+                <>
+                  ✓ Live connection to backend keeper at <code>http://localhost:3000/api/volatility</code>
+                </>
+              ) : (
+                <>
+                  ⚠ Connection failed. Using fallback data. Start backend: <code>npm start</code>
+                </>
+              )}
+            </p>
+          </motion.section>
+        </main>
+      </div>
 
       <BondCreditFooter />
-    
     </div>
   );
 }

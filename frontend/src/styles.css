@@ -37,6 +37,16 @@ body,
   min-height: 100%;
 }
 
+html {
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 /* Import IBM Plex Mono for numbers and technical data */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -954,32 +964,10 @@ button:disabled {
 
 /* ====================== PERFECT FOOTER LAYOUT ====================== */
 .site-footer {
-  /* Make background go full viewport width */
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  
-  /* or the simpler modern way (works in almost all cases): */
-  /* margin-left: -50vw; */
-  /* margin-right: -50vw; */
-  /* left: 50%; */
-  /* position: relative; */
-
-  /* Fallback safe version that usually works without hacks */
-  position: relative;
-  left: 50%;
-  right: 50%;
-  width: 100vw;
-  margin-left: -50vw;
-  margin-right: -50vw;
-
+  width: 100%;
   background: var(--bondcredit-bg2);
   border-top: 1px solid var(--bondcredit-border);
-  
-  /* Vertical spacing */
   padding: 3rem 0 2.5rem;
-  
-  /* Important: prevent overflow issues on very narrow screens */
   box-sizing: border-box;
   flex-shrink: 0;
 }

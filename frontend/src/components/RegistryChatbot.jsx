@@ -38,10 +38,20 @@ export function RegistryChatbot() {
   ]);
   const endRef = useRef(null);
 
-  const scrollToEnd = () => endRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToEnd = (behavior = "smooth") => {
+    if (endRef.current) {
+      const container = endRef.current.parentElement;
+      if (container) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior
+        });
+      }
+    }
+  };
 
   useEffect(() => {
-    scrollToEnd();
+    scrollToEnd("smooth");
   }, [messages]);
 
   const refreshHealth = useCallback(async () => {
