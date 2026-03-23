@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 
 function loadSkillMarkdown() {
   try {
-    const skillPath = path.resolve(__dirname, "../SKILL.md");
+    const skillPath = path.resolve(__dirname, "../.well-known/skills/default/SKILL.md");
     return fs.readFileSync(skillPath, "utf8");
   } catch {
     return null;
@@ -144,7 +144,7 @@ async function main() {
       return sendJson(res, 200, latestTick);
     }
 
-    if ((parsed.pathname === "/api/skill" || parsed.pathname === "/.well-known/skill.md") && req.method === "GET") {
+    if ((parsed.pathname === "/api/skill" || parsed.pathname === "/.well-known/skills/default/SKILL.md") && req.method === "GET") {
       const markdown = loadSkillMarkdown();
 
       if (!markdown) {

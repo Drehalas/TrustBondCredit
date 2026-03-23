@@ -68,7 +68,7 @@ const BondCreditHeader = ({ connected }) => {
             Waitlist
           </button>
           <a 
-            href="/.well-known/skill.md"
+            href="/.well-known/skills/default/SKILL.md"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-medium transition-colors hover:text-bondcredit-white focus-ring" 
