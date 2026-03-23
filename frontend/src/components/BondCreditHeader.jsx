@@ -67,18 +67,22 @@ const BondCreditHeader = ({ connected }) => {
           >
             Waitlist
           </button>
-          <button 
-            className="text-xs font-medium transition-colors hover:text-bondcredit-white cursor-pointer focus-ring" 
+          <a 
+            href="/.well-known/skill.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-medium transition-colors hover:text-bondcredit-white focus-ring" 
             style={{ 
               color: 'var(--bondcredit-s2)', 
               background: 'transparent', 
               border: 'none',
               padding: '0.5rem 0.75rem',
-              borderRadius: '0.375rem'
+              borderRadius: '0.375rem',
+              textDecoration: 'none'
             }}
           >
             Agents
-          </button>
+          </a>
           <a 
             href="https://x.com/bondoncredit?s=21" 
             target="_blank" 
