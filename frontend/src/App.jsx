@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { RegistryChatbot } from "./components/RegistryChatbot";
 import BondCreditHeader from "./components/BondCreditHeader";
+import BondCreditTicker from "./components/BondCreditTicker";
 import BondCreditFooter from "./components/BondCreditFooter";
 import { actionLabel, defaultThresholds } from "./lib/decision";
 import { buildInitialHistory, generateVolatilitySnapshot } from "./services/mockFeed";
@@ -91,6 +92,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <BondCreditHeader connected={connected} />
+      <BondCreditTicker />
       <div className="noise" aria-hidden="true" />
       
       <div className="app-shell flex-grow">
