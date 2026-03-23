@@ -1,0 +1,1095 @@
+:root {
+  /* BondCredit Brand Colors - Exact from main website */
+  --bondcredit-blue: #27279E;
+  --bondcredit-lime: #bced62;
+  --bondcredit-green: #00d180;
+  --bondcredit-red: #f04c74;
+  --bondcredit-amber: #f4b343;
+  --bondcredit-white: #ffffff;
+  --bondcredit-s1: #e8f2ff;
+  --bondcredit-s2: #a3a3a3;
+  --bondcredit-bg: #000000;
+  --bondcredit-bg2: #0a0a0a;
+  --bondcredit-card: #1a1a1a;
+  --bondcredit-card2: #2a2a2a;
+  --bondcredit-border: rgba(255, 255, 255, 0.1);
+  --bondcredit-border2: rgba(255, 255, 255, 0.2);
+  
+  /* Legacy color mapping for compatibility */
+  --bg: var(--bondcredit-bg);
+  --panel: rgba(10, 21, 42, 0.7);
+  --text: var(--bondcredit-s1);
+  --muted: var(--bondcredit-s2);
+  --safe: var(--bondcredit-green);
+  --alert: var(--bondcredit-amber);
+  --critical: var(--bondcredit-red);
+  --line: var(--bondcredit-border);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+/* Import IBM Plex Mono for numbers and technical data */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap');
+
+body {
+  background: var(--bondcredit-bg);
+  color: var(--bondcredit-white);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 0.35px, transparent 0.35px);
+  background-size: 3px 3px;
+  opacity: 0.18;
+}
+
+.app-shell {
+  padding: 6rem 4.5vw 0;
+  position: relative;
+}
+
+.hero {
+  max-width: 64rem;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+.kicker {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--bondcredit-s2);
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.hero h1 {                      /* Scope it to .hero to avoid affecting other h1s */
+  margin: 0.45rem 0 0.5rem;     /* Slightly less bottom margin than before */
+  font-size: clamp(1.5rem, 3vw, 2rem);   /* ← This matches the target exactly */
+  line-height: 1.1;             /* ← Tighter and more "deck-like" */
+  font-weight: 800;
+  color: var(--bondcredit-white);
+  letter-spacing: -0.02em;      /* Optional: subtle polish for modern feel */
+}
+
+.hero-sub {
+  margin: 0;
+  color: var(--bondcredit-s2);
+  font-size: 1.04rem;
+  line-height: 1.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.registry-chatbot-wrap {
+  grid-column: 1 / -1;
+}
+
+.card {
+  background: var(--bondcredit-card);
+  border: 1px solid var(--bondcredit-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--bondcredit-white);
+}
+
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.08rem;
+}
+
+.primary,
+.dashboard-panel {
+  grid-column: span 6;
+}
+
+/* BondCredit Brand Classes - Based on SKILL.md */
+
+/* Typography Classes */
+.text-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.text-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.text-ticker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Color Classes */
+.text-lime {
+  color: var(--bondcredit-lime);
+}
+
+.text-green {
+  color: var(--bondcredit-green);
+}
+
+.text-red {
+  color: var(--bondcredit-red);
+}
+
+.text-amber {
+  color: var(--bondcredit-amber);
+}
+
+.text-blue {
+  color: var(--bondcredit-blue);
+}
+
+/* Background Classes */
+.bg-lime {
+  background-color: var(--bondcredit-lime);
+}
+
+.bg-green {
+  background-color: var(--bondcredit-green);
+}
+
+.bg-red {
+  background-color: var(--bondcredit-red);
+}
+
+.bg-amber {
+  background-color: var(--bondcredit-amber);
+}
+
+.bg-blue {
+  background-color: var(--bondcredit-blue);
+}
+
+/* Flex Utilities */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* Spacing Utilities */
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+/* Accessibility */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.focus-ring:focus {
+  outline: 2px solid var(--bondcredit-lime);
+  outline-offset: 2px;
+}
+
+/* Logo Guidelines */
+.logo-min-size {
+  min-height: 32px;
+  min-width: 80px;
+}
+
+.logo-clear-space {
+  padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 1.5rem 3vw 2rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  
+  .primary,
+  .dashboard-panel {
+    grid-column: span 4;
+  }
+}
+
+/* Status Pills - BondCredit Brand */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.status-pill.is-safe {
+  background-color: var(--bondcredit-green);
+  color: var(--bondcredit-bg);
+}
+
+.status-pill.is-neutral {
+  background-color: var(--bondcredit-lime);
+  color: var(--bondcredit-bg);
+}
+
+.status-pill.is-alert {
+  background-color: var(--bondcredit-amber);
+  color: var(--bondcredit-bg);
+}
+
+.status-pill.is-critical {
+  background-color: var(--bondcredit-red);
+  color: var(--bondcredit-white);
+}
+
+/* Big Number Styling */
+.big-number {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* Card Title Wrap */
+.card-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+/* Gauge Styling */
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gauge-ring {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.gauge-core {
+  background: var(--bondcredit-card);
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Timeline Styling */
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--bondcredit-border);
+}
+
+.timeline li:last-child {
+  border-bottom: none;
+}
+
+.timeline .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.timeline .dot.is-safe {
+  background-color: var(--bondcredit-green);
+}
+
+.timeline .dot.is-neutral {
+  background-color: var(--bondcredit-lime);
+}
+
+.timeline .dot.is-alert {
+  background-color: var(--bondcredit-amber);
+}
+
+.timeline .dot.is-critical {
+  background-color: var(--bondcredit-red);
+}
+
+/* Sparkline */
+.sparkline {
+  width: 100%;
+  height: 100px;
+  stroke: var(--bondcredit-lime);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Threshold Lines */
+.threshold-lines {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.6875rem;
+  color: var(--bondcredit-s2);
+}
+
+/* Form Controls */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.field input {
+  background: var(--bondcredit-card2);
+  border: 1px solid var(--bondcredit-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  color: var(--bondcredit-white);
+  font-size: 0.875rem;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--bondcredit-lime);
+  box-shadow: 0 0 0 2px rgba(188, 237, 98, 0.2);
+}
+
+/* BondCredit Header Styles */
+.wt-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bondcredit-bg2);
+  border-bottom: 1px solid var(--bondcredit-border);
+  padding: 0.75rem 0;
+}
+
+.wt-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  height: 1rem;
+  width: auto;
+  min-height: 32px;
+  min-width: 80px;
+  display: block;
+}
+
+.btn-lime {
+  background: var(--bondcredit-lime);
+  color: var(--bondcredit-bg);
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-lime:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--bondcredit-border);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  color: var(--bondcredit-s2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.theme-toggle-btn:hover {
+  color: var(--bondcredit-white);
+  border-color: var(--bondcredit-s2);
+  background: var(--bondcredit-card2);
+}
+
+/* Navigation links */
+.nav-link {
+  color: var(--bondcredit-s2);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  color: var(--bondcredit-white);
+  background: var(--bondcredit-card2);
+}
+
+.nav-link.active {
+  color: var(--bondcredit-white);
+  background: var(--bondcredit-card2);
+}
+
+/* Mobile menu animation */
+@media (max-width: 1024px) {
+  .wt-nav {
+    padding: 0.75rem 0;
+  }
+  
+  .wt-container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Adjust app-shell padding to account for fixed header */
+.app-shell {
+  padding-top: 3.5rem; /* Reduced for cleaner header spacing */
+}
+
+/* Header link hover effects */
+.wt-nav a:hover {
+  color: var(--bondcredit-white);
+}
+
+.wt-nav .bg-bondcredit-card2:hover {
+  background: var(--bondcredit-card) !important;
+}
+
+.card-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid transparent;
+}
+
+.is-safe {
+  color: #82ffe5;
+  border-color: rgba(18, 212, 182, 0.45);
+}
+
+.is-neutral {
+  color: #b7cdf8;
+  border-color: rgba(162, 189, 236, 0.45);
+}
+
+.is-alert {
+  color: #ffd39f;
+  border-color: rgba(244, 179, 67, 0.45);
+}
+
+.is-critical {
+  color: #ffb9c9;
+  border-color: rgba(240, 76, 116, 0.45);
+}
+
+.gauge-wrap {
+  display: grid;
+  grid-template-columns: 13rem 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gauge-ring {
+  border-radius: 999px;
+  width: 12rem;
+  height: 12rem;
+  display: grid;
+  place-items: center;
+}
+
+.gauge-core {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 20, 0.88);
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.big-number {
+  font-size: 2.1rem;
+  font-weight: 800;
+}
+
+.threshold-blurb p {
+  margin: 0.22rem 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.mono {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.sparkline {
+  width: 100%;
+  height: 13rem;
+  border-radius: 0.8rem;
+  background: rgba(6, 12, 24, 0.84);
+  border: 1px solid var(--line);
+  padding: 0.45rem;
+}
+
+.sparkline polyline {
+  fill: none;
+  stroke: #52f0cf;
+  stroke-width: 1.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.threshold-lines {
+  margin-top: 0.75rem;
+}
+
+.threshold-lines > div {
+  border-top: 1px dashed var(--line);
+  margin-top: 0.4rem;
+}
+
+.threshold-lines span {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.72rem;
+}
+
+.timeline li {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 0.62rem;
+}
+
+.timeline li:last-child {
+  border-bottom: 0;
+}
+
+.dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-top: 0.4rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.dot.is-safe {
+  background: var(--safe);
+}
+
+.dot.is-neutral {
+  background: #9db2da;
+}
+
+.dot.is-alert {
+  background: var(--alert);
+}
+
+.dot.is-critical {
+  background: var(--critical);
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+}
+
+input {
+  border-radius: 0.62rem;
+  border: 1px solid var(--line);
+  background: rgba(6, 11, 21, 0.9);
+  color: var(--text);
+  padding: 0.56rem 0.65rem;
+  font-size: 1rem;
+}
+
+.actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.62rem;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  border-radius: 0.7rem;
+  padding: 0.62rem 0.88rem;
+  background: linear-gradient(135deg, #18e8be, #35a9ff);
+  color: #05101e;
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* —— Registry chatbot (HOL broker UI) —— */
+.registry-card {
+  border: 1px solid rgba(255, 87, 165, 0.22);
+  background:
+    linear-gradient(145deg, rgba(18, 32, 58, 0.85), rgba(8, 12, 24, 0.92)),
+    radial-gradient(circle at 88% 12%, rgba(255, 87, 165, 0.12), transparent 45%);
+  overflow: hidden;
+}
+
+.registry-chatbot__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.registry-chatbot__title {
+  margin: 0.2rem 0 0.35rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.registry-chatbot__lede {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 0.95rem;
+}
+
+.registry-toggle {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+}
+
+.registry-chatbot__body {
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.registry-chatbot__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.registry-pills {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.pill {
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--line);
+  background: rgba(4, 10, 20, 0.55);
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+
+.pill.is-active {
+  color: var(--text);
+  border-color: rgba(18, 232, 190, 0.45);
+  box-shadow: 0 0 0 1px rgba(18, 232, 190, 0.12);
+}
+
+.registry-health {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.registry-discover {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.registry-json {
+  margin: 0;
+  padding: 0.75rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--line);
+  background: rgba(3, 8, 18, 0.92);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  max-height: 14rem;
+  overflow: auto;
+  color: #c8d9f5;
+}
+
+.registry-json--inline {
+  max-height: none;
+  white-space: pre-wrap;
+}
+
+.registry-chat {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.registry-session-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.registry-field-grow {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.registry-session-id {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #7ee0ff;
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.registry-messages {
+  min-height: 12rem;
+  max-height: 18rem;
+  overflow-y: auto;
+  padding: 0.65rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 24px,
+      rgba(255, 255, 255, 0.04) 24px,
+      rgba(255, 255, 255, 0.04) 25px
+    ),
+    rgba(5, 10, 22, 0.65);
+}
+
+.registry-msg {
+  margin-bottom: 0.55rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.55rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 92%;
+}
+
+.registry-msg--user {
+  margin-left: auto;
+  background: linear-gradient(135deg, rgba(18, 232, 190, 0.18), rgba(53, 169, 255, 0.12));
+  border: 1px solid rgba(18, 232, 190, 0.25);
+}
+
+.registry-msg--assistant {
+  margin-right: auto;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  white-space: pre-wrap;
+}
+
+.registry-msg--system {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.registry-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.registry-input-row input {
+  flex: 1;
+}
+
+@media (max-width: 980px) {
+  .primary,
+  .dashboard-panel {
+    grid-column: span 12;
+  }
+
+  .gauge-wrap {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .app-shell {
+    padding: 1.3rem 1rem 2rem;
+  }
+}
+
+/* ====================== PERFECT FOOTER LAYOUT ====================== */
+.site-footer {
+  /* Make background go full viewport width */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  
+  /* or the simpler modern way (works in almost all cases): */
+  /* margin-left: -50vw; */
+  /* margin-right: -50vw; */
+  /* left: 50%; */
+  /* position: relative; */
+
+  /* Fallback safe version that usually works without hacks */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+
+  background: var(--bondcredit-bg2);
+  border-top: 1px solid var(--bondcredit-border);
+  
+  /* Vertical spacing */
+  padding: 3rem 0 2.5rem;
+  
+  /* Important: prevent overflow issues on very narrow screens */
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Make tagline brighter & slightly larger for better readability */
+.ft-tagline {
+  color: rgba(255, 255, 255, 0.92);   /* almost white, but not harsh */
+  /* or use your theme variable if you prefer: color: var(--bondcredit-s1); */
+  
+  font-size: 0.875rem;                /* 14px – readable without being huge */
+  /* or: font-size: clamp(0.8125rem, 2.2vw, 0.95rem); for responsive scaling */
+  
+  font-weight: 400;                   /* or 500 for slightly bolder feel */
+  letter-spacing: 0.02em;             /* subtle polish */
+  margin-top: 0.5rem;                 /* 8px – softer than 6px */
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+/* Optional: make the copyright line match better */
+.ft-copy {
+  color: rgba(255, 255, 255, 0.70);   /* softer gray-white */
+  font-size: 0.75rem;                 /* 12px – keep small as it's secondary */
+  margin-top: 0.4rem;
+  opacity: 0.9;
+}
+
+/* If you want everything slightly brighter overall */
+.site-footer,
+.site-footer * {
+  color: rgba(255, 255, 255, 0.92);   /* subtle off-white for all text */
+}
+
+.site-footer .wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.ft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Bottom row - Social LEFT | Legal RIGHT */
+.footer-bottom {
+  margin-top: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--bondcredit-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;   /* ← THIS IS THE MAGIC LINE */
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.25rem;
+  flex-shrink: 0;
+}
+
+.social-link {
+  color: var(--bondcredit-s2);
+  transition: color 0.2s ease;
+}
+
+.social-link:hover {
+  color: var(--bondcredit-white);
+}
+
+.legal-links {
+  display: flex;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;        /* pushes legal links to right */
+  flex-shrink: 0;
+}
+
+.legal-link {
+  font-size: 0.6875rem;
+  color: var(--bondcredit-s2);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.legal-link:hover {
+  color: var(--bondcredit-white);
+  text-decoration: underline;
+}
+
+/* Mobile fallback */
+@media (max-width: 640px) {
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  .legal-links {
+    justify-content: center;
+  }
+}
+
+/* Logo force white */
+.site-footer img {
+  filter: brightness(0) invert(1);
+}
