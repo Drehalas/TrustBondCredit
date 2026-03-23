@@ -1081,3 +1081,36 @@ button:disabled {
 .site-footer img {
   filter: brightness(0) invert(1);
 }
+/* —— Price Ticker —— */
+.ticker-wrap {
+  width: 100%;
+  background: var(--bondcredit-bg2);
+  border-bottom: 1px solid var(--bondcredit-border);
+  position: fixed;
+  top: 32px; /* Height of the navbar */
+  z-index: 40;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scrollTicker 40s linear infinite;
+}
+
+@keyframes scrollTicker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Adjust app-shell padding to account for fixed header + ticker */
+.app-shell {
+  padding-top: 5rem !important;
+}
