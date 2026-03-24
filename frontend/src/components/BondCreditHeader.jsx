@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const BondCreditHeader = ({ connected }) => {
+const BondCreditHeader = ({ connected, onRegisterClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -64,8 +64,9 @@ const BondCreditHeader = ({ connected }) => {
               padding: '0.5rem 0.75rem',
               borderRadius: '0.375rem'
             }}
+            onClick={onRegisterClick}
           >
-            Waitlist
+            Register Agent
           </button>
           <a 
             href="/.well-known/skills/default/SKILL.md"
