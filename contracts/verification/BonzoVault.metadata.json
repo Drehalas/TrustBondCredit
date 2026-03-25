@@ -1,0 +1,275 @@
+{
+  "compiler": { "version": "0.8.20+commit.a1b79de6" },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Deposit",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "int256",
+            "name": "newLowerTick",
+            "type": "int256"
+          },
+          {
+            "indexed": false,
+            "internalType": "int256",
+            "name": "newUpperTick",
+            "type": "int256"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          }
+        ],
+        "name": "RangeAdjusted",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "user",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "Withdraw",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "reason",
+            "type": "string"
+          }
+        ],
+        "name": "WithdrawToStaking",
+        "type": "event"
+      },
+      {
+        "inputs": [
+          { "internalType": "int256", "name": "_lowerTick", "type": "int256" },
+          { "internalType": "int256", "name": "_upperTick", "type": "int256" }
+        ],
+        "name": "adjustRange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "currentTick",
+        "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "name": "deposits",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getCurrentTick",
+        "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getPositionState",
+        "outputs": [
+          { "internalType": "int256", "name": "tick", "type": "int256" },
+          { "internalType": "int256", "name": "lower", "type": "int256" },
+          { "internalType": "int256", "name": "upper", "type": "int256" },
+          { "internalType": "uint256", "name": "liquidity", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "isInRange",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "lowerTick",
+        "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "int256", "name": "_tick", "type": "int256" }
+        ],
+        "name": "setCurrentTick",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "totalLiquidity",
+        "outputs": [
+          { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "upperTick",
+        "outputs": [{ "internalType": "int256", "name": "", "type": "int256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "withdrawToStaking",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      { "stateMutability": "payable", "type": "receive" }
+    ],
+    "devdoc": {
+      "kind": "dev",
+      "methods": {
+        "adjustRange(int256,int256)": {
+          "params": {
+            "_lowerTick": "New lower tick bound",
+            "_upperTick": "New upper tick bound"
+          }
+        },
+        "getCurrentTick()": { "returns": { "_0": "The current tick" } },
+        "isInRange()": {
+          "returns": {
+            "_0": "True if currentTick is within [lowerTick, upperTick]"
+          }
+        }
+      },
+      "title": "BonzoVault",
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {
+        "adjustRange(int256,int256)": {
+          "notice": "Adjust the liquidity range (tighten, widen, or reset bounds). Called by the volatility-aware rebalancer agent when volatility thresholds trigger."
+        },
+        "deposit()": {
+          "notice": "Allow users to deposit liquidity (simplified for demo). In production, this would be a proper LP deposit with token management."
+        },
+        "getCurrentTick()": {
+          "notice": "Get the current tick in the pool (price position). In a real implementation, this would come from a Uniswap-style pool. For demo, we return the stored state."
+        },
+        "getPositionState()": { "notice": "Get current position state." },
+        "isInRange()": { "notice": "Check if position is in range." },
+        "setCurrentTick(int256)": {
+          "notice": "Simulate price movement (for testing/demo). In production, this would come from the actual pool's state."
+        },
+        "withdraw(uint256)": {
+          "notice": "Withdraw liquidity (simplified for demo)."
+        },
+        "withdrawToStaking()": {
+          "notice": "Emergency withdraw: move liquidity to single-sided staking. Called when volatility exceeds critical threshold (> 50%). This removes the active liquidity position and moves it to staking for safety."
+        }
+      },
+      "notice": "A simplified Bonzo-like vault contract that stores liquidity position ranges. This is a scaffold contract for the BondCredit volatility-aware rebalancer agent. The agent monitors HBAR volatility and adjusts these ranges to minimize impermanent loss.",
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": { "contracts/BonzoVault.sol": "BonzoVault" },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": { "bytecodeHash": "ipfs" },
+    "optimizer": { "enabled": false, "runs": 200 },
+    "remappings": []
+  },
+  "sources": {
+    "contracts/BonzoVault.sol": {
+      "keccak256": "0x833ebccffef19b77054e21f05727cf94e6eae862d71fb0bd5de784e76e43c7e7",
+      "license": "MIT",
+      "urls": [
+        "bzz-raw://da090d90e87aff51de4cd3f0e44d90e9acd91f6028633b4307d6cc7f0b353044",
+        "dweb:/ipfs/Qme8hh2cyxc5xjy3YFbPZWerFVtMHT2GZ4Texsg1cBRmzs"
+      ]
+    }
+  },
+  "version": 1
+}

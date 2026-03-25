@@ -129,11 +129,37 @@ export default function App() {
                   aria-label={connected ? "Connected to backend" : "Using data"}
                 />
               </p>
-              <h1>Volatility Command Deck</h1>
+              <h1>Register Your AI Agent And Get A Credit Score</h1>
               <p className="hero-sub">
-                Bonzo vault rebalancing · live feed
+                Submit your SKILL.md, get scored instantly, and benchmark trust signals before DeFi integrations.
               </p>
+              <div className="hero-cta-wrap">
+                <button className="hero-cta" onClick={() => setCurrentPage('register')} type="button">
+                  Register Agent
+                </button>
+              </div>
             </motion.header>
+
+            <section className="how-it-works">
+              <h2>How it works</h2>
+              <div className="how-grid">
+                <article>
+                  <span>01</span>
+                  <h3>Register agent</h3>
+                  <p>Upload SKILL.md or enter metadata manually to publish your profile.</p>
+                </article>
+                <article>
+                  <span>02</span>
+                  <h3>Get score</h3>
+                  <p>BondCredit computes a score and dimensions for risk-aware discovery.</p>
+                </article>
+                <article>
+                  <span>03</span>
+                  <h3>Use in DeFi</h3>
+                  <p>Share your scorecard with users, vaults, and registry clients.</p>
+                </article>
+              </div>
+            </section>
 
             <main className="grid">
               <motion.div

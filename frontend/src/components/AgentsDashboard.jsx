@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { getAgentScore, listAgents } from '../services/registryClient';
 import './AgentsDashboard.css';
 
-const agentsData = [
+const fallbackAgents = [
   {
     name: 'ZyFi',
     ticker: 'ZYFI',
@@ -79,17 +80,119 @@ const agentsData = [
   }
 ];
 
+const palette = [
+  'rgb(168, 85, 247)',
+  'rgb(188, 237, 98)',
+  'rgb(0, 209, 128)',
+  'rgb(249, 115, 22)',
+  'rgb(74, 144, 184)'
+];
+
+const trendMap = {
+  up: { icon: '↑', color: 'rgb(34, 197, 94)' },
+  down: { icon: '↓', color: 'rgb(239, 68, 68)' },
+  flat: { icon: '→', color: 'var(--bondcredit-s2)' }
+};
+
+function gradeFromScore(score) {
+  if (score >= 85) return 'A';
+  if (score >= 75) return 'B';
+  if (score >= 65) return 'C';
+  return 'D';
+}
+
+function formatBackendAgent(agent, index, scorePayload) {
+  const color = palette[index % palette.length];
+  const score = scorePayload?.score ?? 72;
+  const trendMeta = trendMap[scorePayload?.trend || 'flat'];
+  const dims = scorePayload?.dimensions || { perf: 70, risk: 68, stab: 71, sent: 66, prov: 74 };
+
+  return {
+    id: agent.id,
+    name: agent.name,
+    ticker: agent.ticker || 'AGNT',
+    color,
+    score,
+    trend: trendMeta.icon,
+    trendColor: trendMeta.color,
+    totalApy: 'N/A',
+    nativeApy: 'N/A',
+    volume: 'N/A',
+    yield: 'N/A',
+    txns: 0,
+    grade: scorePayload?.grade || gradeFromScore(score),
+    dims
+  };
+}
+
 export const AgentsDashboard = ({ onRegisterClick }) => {
-  const [activeTab, setActiveTab] = useState('ZyFi');
+  const [agentsData, setAgentsData] = useState(fallbackAgents);
+  const [activeAgentId, setActiveAgentId] = useState(fallbackAgents[0]?.name || 'ZyFi');
   const [search, setSearch] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
-  // Find the active agent object based on activeTab name
-  const activeAgent = agentsData.find(agent => agent.name === activeTab) || agentsData[0];
+  useEffect(() => {
+    let cancelled = false;
 
-  const filteredAgents = agentsData.filter(a =>
-    a.name.toLowerCase().includes(search.toLowerCase()) ||
-    a.ticker.toLowerCase().includes(search.toLowerCase())
+    const hydrate = async () => {
+      setIsLoading(true);
+      setLoadError('');
+      try {
+        const res = await listAgents(40);
+        if (!res?.ok || !Array.isArray(res.items) || res.items.length === 0) {
+          if (!cancelled) setAgentsData(fallbackAgents);
+          return;
+        }
+
+        const scored = await Promise.all(
+          res.items.map(async (agent, index) => {
+            try {
+              const scorePayload = await getAgentScore(agent.id);
+              return formatBackendAgent(agent, index, scorePayload);
+            } catch {
+              return formatBackendAgent(agent, index, null);
+            }
+          })
+        );
+
+        if (!cancelled) {
+          setAgentsData(scored);
+          if (scored[0]) {
+            setActiveAgentId(scored[0].id || scored[0].name);
+          }
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(error instanceof Error ? error.message : String(error));
+          setAgentsData(fallbackAgents);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    hydrate();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const filteredAgents = useMemo(
+    () =>
+      agentsData.filter((agent) =>
+        agent.name.toLowerCase().includes(search.toLowerCase()) ||
+        agent.ticker.toLowerCase().includes(search.toLowerCase())
+      ),
+    [agentsData, search]
   );
+
+  const activeAgent =
+    filteredAgents.find((agent) => (agent.id || agent.name) === activeAgentId) ||
+    filteredAgents[0] ||
+    agentsData[0];
 
   return (
     <div className="agents-dashboard-container col-span-full">
@@ -103,7 +206,7 @@ export const AgentsDashboard = ({ onRegisterClick }) => {
           <input
             className="agent-search"
             placeholder="Search agents by name or ticker…"
-            spellcheck="false"
+            spellCheck="false"
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -120,12 +223,15 @@ export const AgentsDashboard = ({ onRegisterClick }) => {
         </div>
       </div>
 
+      {isLoading && <p className="agent-fetch-status">Loading live agent scores...</p>}
+      {!isLoading && loadError && <p className="agent-fetch-status error">Backend unavailable, showing demo agents.</p>}
+
       <div className="agents-grid-5">
         {filteredAgents.map(agent => (
           <div
-            key={agent.name}
-            className={`agent-card-5 ${activeAgent.name === agent.name ? 'active' : ''}`}
-            onClick={() => setActiveAgent(agent)}
+            key={agent.id || agent.name}
+            className={`agent-card-5 ${activeAgent?.name === agent.name ? 'active' : ''}`}
+            onClick={() => setActiveAgentId(agent.id || agent.name)}
           >
             <div className="card-header" style={{ padding: '0px', border: 'none' }}>
               <div className="card-header-left">
@@ -206,10 +312,10 @@ export const AgentsDashboard = ({ onRegisterClick }) => {
         <div className="agent-tabs">
           {agentsData.map(agent => (
             <button
-              key={agent.name}
-              className={`agent-tab ${activeAgent.name === agent.name ? 'active' : ''}`}
-              style={{ borderBottomColor: activeAgent.name === agent.name ? agent.color : 'transparent' }}
-              onClick={() => setActiveAgent(agent)}
+              key={agent.id || agent.name}
+              className={`agent-tab ${activeAgent?.name === agent.name ? 'active' : ''}`}
+              style={{ borderBottomColor: activeAgent?.name === agent.name ? agent.color : 'transparent' }}
+              onClick={() => setActiveAgentId(agent.id || agent.name)}
             >
               <span className="agent-tab-dot" style={{ background: agent.color }}></span>
               {agent.name}

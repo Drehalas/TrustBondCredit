@@ -1,0 +1,30 @@
+{
+  "name": "bondcredit-bonzo-vault",
+  "version": "1.0.0",
+  "description": "Bonzo Vault smart contract for BondCredit volatility-aware rebalancer",
+  "main": "BonzoVault.sol",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network hedera-testnet",
+    "deploy-mainnet": "hardhat run scripts/deploy.js --network hedera-mainnet",
+    "test": "hardhat test"
+  },
+  "keywords": [
+    "hedera",
+    "solidity",
+    "vault",
+    "liquidity",
+    "defi"
+  ],
+  "author": "bond.credit",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.4"
+  }
+}

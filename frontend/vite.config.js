@@ -29,6 +29,14 @@ const backendProxy = {
     target: "http://127.0.0.1:3000",
     changeOrigin: true
   },
+  "/api/agents": {
+    target: "http://127.0.0.1:3000",
+    changeOrigin: true
+  },
+  "/api/agent/actions/latest": {
+    target: "http://127.0.0.1:3000",
+    changeOrigin: true
+  },
   "/api/skill": {
     target: "http://127.0.0.1:3000",
     changeOrigin: true

@@ -11,6 +11,7 @@ import { VolatilityService } from "./services/volatility-service.js";
 import { VolatilityAgentRegistry } from "./services/volatility-agent-registry.js";
 import { AgentChatRouter } from "./services/agent-chat-router.js";
 import { DecisionHistoryStore } from "./services/decision-history-store.js";
+import { AgentRegistryStore } from "./services/agent-registry-store.js";
 import { VolatilityAwareRebalancer } from "./keeper/rebalancer.js";
 import { logger } from "./logger.js";
 
@@ -44,7 +45,9 @@ async function main() {
   const historyStore = new DecisionHistoryStore({
     filePath: config.storage.decisionHistoryPath
   });
+  const agentStore = new AgentRegistryStore();
   await historyStore.init();
+  await agentStore.init();
 
   const JOURNAL_LIMIT = 200;
 
@@ -69,6 +72,59 @@ async function main() {
   };
 
   const isWriteIntent = (intent) => intent === "adjust_range" || intent === "withdraw_to_staking";
+
+  const toIntInRange = (value, min, max, fallback) => {
+    const num = Number(value);
+    if (!Number.isFinite(num)) return fallback;
+    return Math.max(min, Math.min(max, Math.trunc(num)));
+  };
+
+  const hashSeed = (input) => {
+    const text = String(input || "");
+    let h = 2166136261;
+    for (let i = 0; i < text.length; i += 1) {
+      h ^= text.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return Math.abs(h >>> 0);
+  };
+
+  const getGrade = (score) => {
+    if (score >= 85) return "A";
+    if (score >= 75) return "B";
+    if (score >= 65) return "C";
+    return "D";
+  };
+
+  const scoreAgent = async (agent) => {
+    const recent = await historyStore.listRecent(80);
+    const success = recent.filter((item) => item.status === "SUCCESS").length;
+    const skipped = recent.filter((item) => item.status === "SKIPPED").length;
+    const failed = recent.filter((item) => item.status === "FAILED").length;
+
+    const seed = hashSeed(`${agent.id}:${agent.uaid || ""}:${agent.ticker || ""}`);
+    const perf = 55 + (seed % 31);
+    const risk = 50 + ((seed >> 3) % 36);
+    const stab = 52 + ((seed >> 5) % 34);
+    const sent = 48 + ((seed >> 7) % 36);
+    const prov = 62 + ((seed >> 9) % 31);
+
+    const activityBonus = Math.min(8, Math.floor((success + skipped) / 6));
+    const reliabilityPenalty = Math.min(12, failed * 2);
+
+    const base = Math.round((perf + risk + stab + sent + prov) / 5);
+    const score = Math.max(35, Math.min(99, base + activityBonus - reliabilityPenalty));
+    const trend = failed > success / 2 ? "down" : success > 0 ? "up" : "flat";
+
+    return {
+      score,
+      grade: getGrade(score),
+      trend,
+      dimensions: { perf, risk, stab, sent, prov },
+      source: "computed",
+      model: "bondcredit-v1"
+    };
+  };
 
   const sendJson = (res, statusCode, body) => {
     res.writeHead(statusCode, { "Content-Type": "application/json" });
@@ -128,7 +184,7 @@ async function main() {
   // HTTP API server for frontend polling + local chat router
   const apiServer = http.createServer((req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.setHeader("Content-Type", "application/json");
 
@@ -167,8 +223,7 @@ async function main() {
     }
 
     if (parsed.pathname === "/api/agent/actions/latest" && req.method === "GET") {
-      const limitRaw = Number(parsed.searchParams.get("limit") || 20);
-      const limit = Number.isFinite(limitRaw) ? Math.max(1, Math.min(100, Math.trunc(limitRaw))) : 20;
+      const limit = toIntInRange(parsed.searchParams.get("limit") || 20, 1, 100, 20);
       historyStore
         .listRecent(limit)
         .then((items) => {
@@ -182,6 +237,127 @@ async function main() {
           sendJson(res, 500, {
             ok: false,
             error: "history_read_failed",
+            message: error instanceof Error ? error.message : String(error)
+          });
+        });
+      return;
+    }
+
+    if (parsed.pathname === "/api/agents" && req.method === "GET") {
+      const limit = toIntInRange(parsed.searchParams.get("limit") || 200, 1, 500, 200);
+      agentStore
+        .listRecent(limit)
+        .then((items) => {
+          sendJson(res, 200, {
+            ok: true,
+            count: items.length,
+            items
+          });
+        })
+        .catch((error) => {
+          sendJson(res, 500, {
+            ok: false,
+            error: "agents_read_failed",
+            message: error instanceof Error ? error.message : String(error)
+          });
+        });
+      return;
+    }
+
+    if (parsed.pathname === "/api/agents/register" && req.method === "POST") {
+      readBody(req)
+        .then(async (body) => {
+          const name = String(body.name || "").trim();
+          const ticker = String(body.ticker || "").trim().toUpperCase();
+          if (!name || !ticker) {
+            return sendJson(res, 400, {
+              ok: false,
+              error: "invalid_payload",
+              message: "name and ticker are required"
+            });
+          }
+
+          const agent = await agentStore.register({
+            name,
+            ticker,
+            uaid: body.uaid || null,
+            description: body.description || "",
+            skillMarkdown: body.skillMarkdown || "",
+            source: body.source || "manual",
+            metadata: body.metadata || {}
+          });
+          const scoring = await scoreAgent(agent);
+
+          sendJson(res, 201, {
+            ok: true,
+            agent,
+            scoring
+          });
+        })
+        .catch((error) => {
+          sendJson(res, 400, {
+            ok: false,
+            error: "invalid_json",
+            message: error instanceof Error ? error.message : String(error)
+          });
+        });
+      return;
+    }
+
+    const scoreMatch = parsed.pathname.match(/^\/api\/agents\/([^/]+)\/score$/);
+    if (scoreMatch && req.method === "GET") {
+      const id = decodeURIComponent(scoreMatch[1]);
+      agentStore
+        .getById(id)
+        .then(async (agent) => {
+          if (!agent) {
+            sendJson(res, 404, {
+              ok: false,
+              error: "agent_not_found",
+              message: `No agent found for id ${id}`
+            });
+            return;
+          }
+          const scoring = await scoreAgent(agent);
+          sendJson(res, 200, {
+            ok: true,
+            agentId: agent.id,
+            ...scoring
+          });
+        })
+        .catch((error) => {
+          sendJson(res, 500, {
+            ok: false,
+            error: "score_failed",
+            message: error instanceof Error ? error.message : String(error)
+          });
+        });
+      return;
+    }
+
+    const agentMatch = parsed.pathname.match(/^\/api\/agents\/([^/]+)$/);
+    if (agentMatch && req.method === "GET") {
+      const id = decodeURIComponent(agentMatch[1]);
+      agentStore
+        .getById(id)
+        .then((agent) => {
+          if (!agent) {
+            sendJson(res, 404, {
+              ok: false,
+              error: "agent_not_found",
+              message: `No agent found for id ${id}`
+            });
+            return;
+          }
+          sendJson(res, 200, {
+            ok: true,
+            agent
+          });
+        })
+        .catch((error) => {
+          sendJson(res, 500, {
+            ok: false,
+            error: "agent_read_failed",
             message: error instanceof Error ? error.message : String(error)
           });
         });

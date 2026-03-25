@@ -33,3 +33,35 @@ export async function registryChatMessage(body) {
   });
   return r.json();
 }
+
+export async function registerAgent(body) {
+  const r = await fetch(`${base()}/api/agents/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const payload = await r.json();
+  if (!r.ok) {
+    throw new Error(payload.message || payload.error || `HTTP ${r.status}`);
+  }
+  return payload;
+}
+
+export async function listAgents(limit = 200) {
+  const params = new URLSearchParams({ limit: String(limit) });
+  const r = await fetch(`${base()}/api/agents?${params}`);
+  const payload = await r.json();
+  if (!r.ok) {
+    throw new Error(payload.message || payload.error || `HTTP ${r.status}`);
+  }
+  return payload;
+}
+
+export async function getAgentScore(id) {
+  const r = await fetch(`${base()}/api/agents/${encodeURIComponent(id)}/score`);
+  const payload = await r.json();
+  if (!r.ok) {
+    throw new Error(payload.message || payload.error || `HTTP ${r.status}`);
+  }
+  return payload;
+}

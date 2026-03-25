@@ -55,6 +55,165 @@
   max-width: 600px;
 }
 
+.register-form-card {
+  border: 1px solid var(--bondcredit-border);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mode-switch {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.mode-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--bondcredit-border);
+  color: var(--bondcredit-s1);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: var(--bondcredit-lime);
+  color: var(--bondcredit-bg);
+  border-color: var(--bondcredit-lime);
+}
+
+.upload-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field span {
+  font-size: 0.75rem;
+  color: var(--bondcredit-s2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field input,
+.field textarea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--bondcredit-border);
+  color: var(--bondcredit-white);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.file-field input {
+  padding: 8px;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.muted-text {
+  color: var(--bondcredit-s2);
+  font-size: 0.82rem;
+}
+
+.form-error {
+  color: var(--bondcredit-red);
+  background: rgba(240, 76, 116, 0.1);
+  border: 1px solid rgba(240, 76, 116, 0.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+}
+
+.score-result {
+  border: 1px solid rgba(188, 237, 98, 0.35);
+  background: rgba(188, 237, 98, 0.06);
+  border-radius: 12px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 12px 20px;
+  align-items: center;
+}
+
+.score-result-main h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.score-result-main p {
+  margin: 2px 0 0;
+  color: var(--bondcredit-s2);
+  font-size: 0.8rem;
+}
+
+.score-pill {
+  justify-self: end;
+  border: 1px solid rgba(188, 237, 98, 0.5);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-family: var(--font-mono, monospace);
+}
+
+.score-pill strong {
+  font-size: 1.15rem;
+  margin-right: 4px;
+}
+
+.result-dims {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.result-dim-item {
+  border: 1px solid var(--bondcredit-border);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.guide-heading {
+  margin: 8px 0 -8px;
+  font-size: 1.15rem;
+  color: var(--bondcredit-s1);
+}
+
 /* Steps Grid */
 .steps-grid {
   display: grid;
@@ -234,6 +393,13 @@
   box-shadow: 0 8px 20px rgba(188, 237, 98, 0.25);
 }
 
+.primary-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .steps-grid {
@@ -244,6 +410,12 @@
 @media (max-width: 600px) {
   .register-header h1 {
     font-size: 2.25rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .result-dims {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .register-footer {
     flex-direction: column;

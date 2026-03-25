@@ -87,6 +87,16 @@
   box-shadow: 0 4px 12px rgba(188, 237, 98, 0.2);
 }
 
+.agent-fetch-status {
+  margin: -8px 0 0;
+  font-size: 0.8rem;
+  color: var(--bondcredit-s2);
+}
+
+.agent-fetch-status.error {
+  color: var(--bondcredit-amber);
+}
+
 /* Agents Grid */
 .agents-grid-5 {
   display: grid;
